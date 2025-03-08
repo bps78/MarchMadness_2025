@@ -6,6 +6,7 @@ kenpom = pd.read_csv("Renamed_KenPom.csv") #Chat-GPT renamed teams to match spel
 teams = pd.read_csv("MTeams.csv")
 season = pd.read_csv("MRegularSeasonDetailedResults.csv")
 tourney = pd.read_csv("MNCAATourneyCompactResults.csv")
+seeds = pd.read_csv("MNCAATourneySeeds.csv")
 
 my_data = pd.DataFrame()
 year = 2003
@@ -55,7 +56,21 @@ def prepare_data(df):
     
     return output
 
+
 prepped_data = prepare_data(prepped_data)
+
+#Apply seeds
+seeds['seed'] = seeds['Seed'].apply(lambda x: int(x[1:3]))
+seeds_T1 = seeds[['Season','TeamID','seed']].copy()
+seeds_T2 = seeds[['Season','TeamID','seed']].copy()
+seeds_T1.columns = ['Season','T1_TeamID','T1_seed']
+seeds_T2.columns = ['Season','T2_TeamID','T2_seed']
+prepped_data = pd.merge(prepped_data, seeds_T1, on = ['Season', 'T1_TeamID'], how = 'left')
+prepped_data = pd.merge(prepped_data, seeds_T2, on = ['Season', 'T2_TeamID'], how = 'left')
+
+prepped_data['Seed_Diff'] = prepped_data['T1_seed'] - prepped_data['T2_seed']
+
+print(prepped_data.head())
 
 prepped_data.to_csv('prepped_data.csv', index=False)
 

@@ -1,10 +1,15 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-from xgboost import XGBClassifier, plot_importance
+from xgboost import XGBClassifier
+from colorama import Fore
 
 data = pd.read_csv("prepped_data.csv")
 
-features = ['T1_OffRating', 'T1_Tempo', 'T2_OffRating', 'T2_Tempo']
+#********TODO****************
+#Add differential features (ex. tempo diff, offRating diff)
+#Add more features
+
+features = ['T1_OffRating', 'T1_Tempo', 'T2_OffRating', 'T2_Tempo', 'T1_seed', 'T2_seed', 'Seed_Diff']
 
 train = data[data['Season'] < 2020]
 test = data[data['Season'] > 2020]
@@ -21,7 +26,7 @@ predictions = m1.predict_proba(Xtest)
 output = pd.DataFrame(predictions[:,1], columns = ['Predictions'])
 output['Actual'] = ytest.astype(int).reset_index(drop=True)
 output["Score"] = (output["Actual"] - output["Predictions"])**2
-print("********** PREDITCTION SCORE: ", output["Score"].mean(), " ***************")
+print(Fore.BLUE + "********** PREDITCTION SCORE: " + Fore.GREEN + str(output["Score"].mean()) + Fore.BLUE + " ***************" + Fore.WHITE)
 
 test['Pred'] = predictions[:,1]
 test['rounded_preds'] = np.round(predictions[:,1])
