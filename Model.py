@@ -5,9 +5,10 @@ from colorama import Fore
 
 data = pd.read_csv("prepped_data.csv")
 
-#********TODO****************
-#Add differential features (ex. tempo diff, offRating diff)
-#Add more features
+# ********TODO****************
+# Model with just seeding should be getting better score?
+# Try adding differential features (ex. **tempo diff, offRating diff)
+# Add more features
 
 features = ['T1_OffRating', 'T1_Tempo', 'T2_OffRating', 'T2_Tempo', 'T1_seed', 'T2_seed', 'Seed_Diff']
 
@@ -26,6 +27,8 @@ predictions = m1.predict_proba(Xtest)
 output = pd.DataFrame(predictions[:,1], columns = ['Predictions'])
 output['Actual'] = ytest.astype(int).reset_index(drop=True)
 output["Score"] = (output["Actual"] - output["Predictions"])**2
+
+# Score = 0.25 indicates each team is given an equal chance, no pattern association
 print(Fore.BLUE + "********** PREDITCTION SCORE: " + Fore.GREEN + str(output["Score"].mean()) + Fore.BLUE + " ***************" + Fore.WHITE)
 
 test['Pred'] = predictions[:,1]
