@@ -1,25 +1,31 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-from xgboost import XGBClassifier
-from sklearn.ensemble import RandomForestClassifier
-from colorama import Fore
-from sklearn.model_selection import GridSearchCV
+from xgboost import XGBClassifier #Model used for prediction
+from sklearn.ensemble import RandomForestClassifier #Random forest for feature selection
+from colorama import Fore #Used to print colored console output for readability
+from sklearn.model_selection import GridSearchCV #Model used to optimize parameters of XGBoost model
 
 data = pd.read_csv("prepped_data.csv")
 
-# RECORD = 0.19773 -> seedDiff, offRankDiff, 3PG, FTPG, PDiffPG
+#Code in this file is based on code provided in the workshop at the following link: https://github.com/wiscosac/wiscosac.github.io/blob/master/files/ML_Mania_Workshop.ipynb
+
+#***** RECORD = 0.19773 -> seedDiff, offRankDiff, 3PG, FTPG, PDiffPG ******
 
 # ********TODO****************
 # Add mean assists feature
+# Home & Away Splits?? (Away win pct??)
 # Add more features
 
+#Features the model will be using
 features = ['Seed_Diff', 'offRankDiff', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
 
+#Train with tournament games 2003-2019, test with tournament games 2021-2024
 train = data[data['Season'] < 2020]
 test = data[data['Season'] > 2020]
 
+#Assign test and train values
 Xtrain = train[features]
-ytrain = (train['T1_Score'] > train['T2_Score']).astype(int)
+ytrain = (train['T1_Score'] > train['T2_Score']).astype(int) #We are predicting if T1 will beat T2 for each game in the data
 Xtest = test[features]
 ytest = (test['T1_Score'] > test['T2_Score']).astype(int)
 
@@ -39,6 +45,7 @@ m1 = XGBClassifier()
 m1.fit(Xtrain, ytrain)
 predictions = m1.predict_proba(Xtest)
 
+#Get the error score for this model
 output = pd.DataFrame(predictions[:,1], columns = ['Predictions'])
 output['Actual'] = ytest.astype(int).reset_index(drop=True)
 output["Score"] = (output["Actual"] - output["Predictions"])**2
@@ -54,16 +61,19 @@ param_grid = {
     'subsample': [0.6, 0.75, 0.9]
 }
 
+#Fit a gridSearch model to find the best parameters
 grid_search = GridSearchCV(estimator=m1, param_grid=param_grid, scoring='accuracy', cv=5)
 grid_search.fit(Xtrain, ytrain)
 
 best_params = grid_search.best_params_
 
+#Train another XGBoost model, but this time with tuned parameters
 m2 = XGBClassifier(reg_alpha = 0.15, reg_lambda = 0.01, **best_params)
 
 m2.fit(Xtrain, ytrain)
 predictions2 = m2.predict_proba(Xtest)
 
+#Get our new error score
 output = pd.DataFrame(predictions2[:,1], columns = ['Predictions'])
 output['Actual'] = ytest.astype(int).reset_index(drop=True)
 output["Score"] = (output["Actual"] - output["Predictions"])**2
