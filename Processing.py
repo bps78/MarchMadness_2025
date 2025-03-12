@@ -11,6 +11,22 @@ seeds = pd.read_csv("MNCAATourneySeeds.csv")
 my_data = pd.DataFrame()
 year = 2003
 
+def getAggregateStats(my_team, year):
+    #my_team = 1104 #Alabama
+    #year = 2021
+    
+    w_games = season.loc[((season['WTeamID'] == my_team)) & (season['Season'] == year)]
+    l_games = season.loc[((season['LTeamID'] == my_team)) & (season['Season'] == year)]
+    
+   # points_made = (w_games['WFGM3'].sum() * 3) + (l_games['LFGM3'].sum() * 3) + ((w_games['WFGM'].sum() - w_games['WFGM3'].sum()) * 2) + ((l_games['LFGM'].sum() - l_games['LFGM3'].sum()) * 2)
+   #posessions = w_games['WFGA'].sum() + w_games['WTO'].sum() + l_games['LFGA'].sum() + l_games['LTO'].sum()
+    gameCount = (len(w_games) + len(l_games))
+
+    threesPerG = (w_games['WFGM3'].sum() + l_games['LFGM3'].sum()) / gameCount  #Three Pointers Made / Game
+    ftpg = (w_games['WFTM'].sum() + l_games['LFTM'].sum()) / gameCount #Free Throws Made / Game
+   
+    return (threesPerG, ftpg)
+
 for y in range(2003, 2025):
     year = y
     if(year != 2020):
@@ -19,7 +35,9 @@ for y in range(2003, 2025):
                 offRank = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency Rank"].values[0]
                 temp = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].values[0]
                 off = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency"].values[0]
-                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'offRating': off, 'tempo': temp}, index = [x])
+                threesPG, ftpg = getAggregateStats(z, year)
+
+                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'offRating': off, 'tempo': temp, 'threepg': threesPG, 'ftpg': ftpg}, index = [x])
 
                 if(not new_data.empty):
                     my_data = pd.concat([my_data, new_data])
@@ -41,6 +59,12 @@ for index, row in tourney.iterrows():
         tourney.loc[index,'WTempo'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['tempo'].values[0]
         tourney.loc[index,'LTempo'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['tempo'].values[0]
 
+        tourney.loc[index,'WThreepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['threepg'].values[0]
+        tourney.loc[index,'LThreepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['threepg'].values[0]
+
+        tourney.loc[index,'WFTPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['ftpg'].values[0]
+        tourney.loc[index,'LFTPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['ftpg'].values[0]
+
         tourney.loc[index,'WOffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRank'].values[0]
         tourney.loc[index,'LOffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['offRank'].values[0]
 
@@ -51,7 +75,7 @@ print(prepped_data.shape)
 
 
 def prepare_data(df):
-    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WTempo', 'LTempo']]
+    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WTempo', 'LTempo', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG']]
   
     df.columns = [x.replace('W','T1_').replace('L','T2_') for x in list(df.columns)]
     dfswap.columns = [x.replace('L','T1_').replace('W','T2_') for x in list(dfswap.columns)]
@@ -65,8 +89,9 @@ def prepare_data(df):
 prepped_data = prepare_data(prepped_data)
 
 #Create Differential Stats
-prepped_data['offRatingDiff'] = prepped_data['T1_OffRating'] - prepped_data['T2_OffRating']
-prepped_data['tempoDiff'] = prepped_data['T1_Tempo'] - prepped_data['T2_Tempo']
+
+#prepped_data['offRatingDiff'] = prepped_data['T1_OffRating'] - prepped_data['T2_OffRating']
+#prepped_data['tempoDiff'] = prepped_data['T1_Tempo'] - prepped_data['T2_Tempo']
 prepped_data['offRankDiff'] = prepped_data['T1_OffRank'] - prepped_data['T2_OffRank']
 
 

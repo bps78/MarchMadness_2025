@@ -6,12 +6,12 @@ from sklearn.model_selection import GridSearchCV
 
 data = pd.read_csv("prepped_data.csv")
 
-# RECORD = 0.203 - seedDiff & offRankDiff
+# RECORD = 0.202 - seedDiff, offRankDiff, 3PG, FTPG
 
 # ********TODO****************
 # Add more features
 
-features = ['Seed_Diff', 'offRankDiff']
+features = ['Seed_Diff', 'offRankDiff', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG']
 
 train = data[data['Season'] < 2020]
 test = data[data['Season'] > 2020]
@@ -37,7 +37,8 @@ print(Fore.BLUE + "********** PREDITCTION SCORE: " + Fore.GREEN + str(output["Sc
 param_grid = {
     'max_depth': [3, 5, 7],
     'min_child_weight': [1, 3, 5],
-    'learning_rate': [0.1, 0.01, 0.001]
+    'learning_rate': [0.1, 0.01, 0.001],
+    'subsample': [0.6, 0.75, 0.9]
 }
 
 grid_search = GridSearchCV(estimator=m1, param_grid=param_grid, scoring='accuracy', cv=5)
@@ -59,7 +60,8 @@ print(Fore.BLUE + "********** OPTIMIZED PREDITCTION SCORE: " + Fore.GREEN + str(
 test['Pred'] = predictions2[:,1]
 test['rounded_preds'] = np.round(predictions2[:,1])
 test['Actual'] = (test['T1_Score'] > test['T2_Score']).astype(int)
-summary = test[['Season', 'DayNum', 'T1_TeamID', 'T1_Score', 'T2_TeamID', 'T2_Score', 'Pred', 'rounded_preds', 'Actual']]
+test['Correct'] = test['rounded_preds'] == test['Actual']
+summary = test[['Season', 'DayNum', 'T1_TeamID', 'T1_Score', 'T2_TeamID', 'T2_Score', 'Pred', 'rounded_preds', 'Actual', 'Correct']]
 
 #Save our Predictions for viewing
 summary.to_csv('Predictions.csv', index=False)
