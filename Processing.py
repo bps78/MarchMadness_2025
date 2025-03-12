@@ -24,8 +24,9 @@ def getAggregateStats(my_team, year):
 
     threesPerG = (w_games['WFGM3'].sum() + l_games['LFGM3'].sum()) / gameCount  #Three Pointers Made / Game
     ftpg = (w_games['WFTM'].sum() + l_games['LFTM'].sum()) / gameCount #Free Throws Made / Game
+    pdiffpg = ((w_games['WScore'].sum() - w_games['LScore'].sum()) + (l_games['LScore'].sum() - l_games['WScore'].sum())) / gameCount #Mean Point differential per game
    
-    return (threesPerG, ftpg)
+    return (threesPerG, ftpg, pdiffpg)
 
 for y in range(2003, 2025):
     year = y
@@ -35,9 +36,9 @@ for y in range(2003, 2025):
                 offRank = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency Rank"].values[0]
                 temp = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].values[0]
                 off = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency"].values[0]
-                threesPG, ftpg = getAggregateStats(z, year)
+                threesPG, ftpg, pdiffpg = getAggregateStats(z, year)
 
-                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'offRating': off, 'tempo': temp, 'threepg': threesPG, 'ftpg': ftpg}, index = [x])
+                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'offRating': off, 'tempo': temp, 'threepg': threesPG, 'ftpg': ftpg, 'pDiffpg': pdiffpg}, index = [x])
 
                 if(not new_data.empty):
                     my_data = pd.concat([my_data, new_data])
@@ -65,6 +66,9 @@ for index, row in tourney.iterrows():
         tourney.loc[index,'WFTPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['ftpg'].values[0]
         tourney.loc[index,'LFTPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['ftpg'].values[0]
 
+        tourney.loc[index,'WPDiffPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['pDiffpg'].values[0]
+        tourney.loc[index,'LPDiffPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['pDiffpg'].values[0]
+
         tourney.loc[index,'WOffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRank'].values[0]
         tourney.loc[index,'LOffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['offRank'].values[0]
 
@@ -75,7 +79,7 @@ print(prepped_data.shape)
 
 
 def prepare_data(df):
-    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WTempo', 'LTempo', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG']]
+    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WTempo', 'LTempo', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
   
     df.columns = [x.replace('W','T1_').replace('L','T2_') for x in list(df.columns)]
     dfswap.columns = [x.replace('L','T1_').replace('W','T2_') for x in list(dfswap.columns)]

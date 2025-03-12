@@ -1,17 +1,19 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 from xgboost import XGBClassifier
+from sklearn.ensemble import RandomForestClassifier
 from colorama import Fore
 from sklearn.model_selection import GridSearchCV
 
 data = pd.read_csv("prepped_data.csv")
 
-# RECORD = 0.202 - seedDiff, offRankDiff, 3PG, FTPG
+# RECORD = 0.19773 -> seedDiff, offRankDiff, 3PG, FTPG, PDiffPG
 
 # ********TODO****************
+# Add mean assists feature
 # Add more features
 
-features = ['Seed_Diff', 'offRankDiff', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG']
+features = ['Seed_Diff', 'offRankDiff', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
 
 train = data[data['Season'] < 2020]
 test = data[data['Season'] > 2020]
@@ -21,7 +23,18 @@ ytrain = (train['T1_Score'] > train['T2_Score']).astype(int)
 Xtest = test[features]
 ytest = (test['T1_Score'] > test['T2_Score']).astype(int)
 
+#Random Forest for Feature Selection
+"""rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(Xtrain, ytrain)
 
+feature_importance = pd.Series(rf.feature_importances_, index = Xtrain.columns)
+top_features = feature_importance.nlargest(4).index #Selects the 3 top features
+
+#Filter for only selected features
+Xtrain_selected = Xtrain[top_features]
+Xtest_selected = Xtest[top_features]"""
+
+#Train the XGBoost model
 m1 = XGBClassifier()
 m1.fit(Xtrain, ytrain)
 predictions = m1.predict_proba(Xtest)
@@ -31,7 +44,7 @@ output['Actual'] = ytest.astype(int).reset_index(drop=True)
 output["Score"] = (output["Actual"] - output["Predictions"])**2
 
 # Score = 0.25 indicates each team is given an equal chance, no pattern association
-print(Fore.BLUE + "********** PREDITCTION SCORE: " + Fore.GREEN + str(output["Score"].mean()) + Fore.BLUE + " ***************" + Fore.WHITE)
+print(Fore.BLUE + "********** PREDITCTION SCORE: " + Fore.YELLOW + str(output["Score"].mean()) + Fore.BLUE + " ***************" + Fore.WHITE)
 
 #Optimized parameters to avoid overfitting and improve the model
 param_grid = {
@@ -57,6 +70,7 @@ output["Score"] = (output["Actual"] - output["Predictions"])**2
 print(Fore.BLUE + "********** OPTIMIZED PREDITCTION SCORE: " + Fore.GREEN + str(output["Score"].mean()) + Fore.BLUE + " ***************" + Fore.WHITE)
 
 #Updated Predictions
+test = test.copy()
 test['Pred'] = predictions2[:,1]
 test['rounded_preds'] = np.round(predictions2[:,1])
 test['Actual'] = (test['T1_Score'] > test['T2_Score']).astype(int)
