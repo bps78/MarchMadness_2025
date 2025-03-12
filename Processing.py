@@ -16,9 +16,10 @@ for y in range(2003, 2025):
     if(year != 2020):
         for x, z in zip(teams['TeamName'], teams['TeamID']):
             if(kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].any()):
+                offRank = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency Rank"].values[0]
                 temp = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].values[0]
                 off = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency"].values[0]
-                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRating': off, 'tempo': temp}, index = [x])
+                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'offRating': off, 'tempo': temp}, index = [x])
 
                 if(not new_data.empty):
                     my_data = pd.concat([my_data, new_data])
@@ -27,6 +28,7 @@ print(my_data.head())
 
 tourney = tourney.loc[tourney['Season'] > 2002]
 
+#Get each game from the tournament since 2002
 for index, row in tourney.iterrows():
     wID = row['WTeamID']
     lID = row['LTeamID']
@@ -35,9 +37,12 @@ for index, row in tourney.iterrows():
     if(my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRating'].any() and my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['offRating'].any()):
         tourney.loc[index,'WOffRating'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRating'].values[0]
         tourney.loc[index,'LOffRating'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['offRating'].values[0]
-
+        
         tourney.loc[index,'WTempo'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['tempo'].values[0]
         tourney.loc[index,'LTempo'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['tempo'].values[0]
+
+        tourney.loc[index,'WOffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRank'].values[0]
+        tourney.loc[index,'LOffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['offRank'].values[0]
 
 print(tourney.head())
 
@@ -46,7 +51,7 @@ print(prepped_data.shape)
 
 
 def prepare_data(df):
-    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WTempo', 'LTempo']]
+    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WTempo', 'LTempo']]
   
     df.columns = [x.replace('W','T1_').replace('L','T2_') for x in list(df.columns)]
     dfswap.columns = [x.replace('L','T1_').replace('W','T2_') for x in list(dfswap.columns)]
@@ -58,6 +63,12 @@ def prepare_data(df):
 
 
 prepped_data = prepare_data(prepped_data)
+
+#Create Differential Stats
+prepped_data['offRatingDiff'] = prepped_data['T1_OffRating'] - prepped_data['T2_OffRating']
+prepped_data['tempoDiff'] = prepped_data['T1_Tempo'] - prepped_data['T2_Tempo']
+prepped_data['offRankDiff'] = prepped_data['T1_OffRank'] - prepped_data['T2_OffRank']
+
 
 #Apply seeds
 seeds['seed'] = seeds['Seed'].apply(lambda x: int(x[1:3]))
