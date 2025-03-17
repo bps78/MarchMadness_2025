@@ -10,6 +10,7 @@ data = pd.read_csv("prepped_data.csv")
 # RECORD = 0.18954 -> Random Tree (seedDiff, offRankDiff, defRankDiff, fgEff, ftRate, 3PG, FTPG, PDiffPG)
 
 # ********TODO****************
+# Add Barttovrik Rankings Data?? !**! (THE DATA SET IS IMPORTED AND RENAMED)
 # Add resume feature??
 
 features = ['Seed_Diff', 'offRankDiff', 'defRankDiff', 'T1_fgEff', 'T2_fgEff', 'T1_ftRate', 'T2_ftRate', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
