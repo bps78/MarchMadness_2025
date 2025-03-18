@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 kenpom = pd.read_csv("Renamed_KenPom.csv") #Chat-GPT renamed teams to match spelling in MTeams.csv
 kenpom_off = pd.read_csv("INT _ KenPom _ Offense_Renamed.csv")
 
+bart = pd.read_csv("KenPom Barttorvik_Renamed.csv")
+
 teams = pd.read_csv("MTeams.csv")
 season = pd.read_csv("MRegularSeasonDetailedResults.csv")
 tourney = pd.read_csv("MNCAATourneyCompactResults.csv")
@@ -34,7 +36,7 @@ for y in range(2003, 2025):
     year = y
     if(year != 2020):
         for x, z in zip(teams['TeamName'], teams['TeamID']):
-            if(kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].any() and kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["eFGPct"].any()):
+            if(kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].any() and kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["eFGPct"].any() and bart.loc[(bart['TEAM'] == x) & (bart['YEAR'] == year)]['WAB'].any()):
                 offRank = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency Rank"].values[0]
                 defRank = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Defensive Efficiency Rank"].values[0]
                 temp = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].values[0]
@@ -43,9 +45,11 @@ for y in range(2003, 2025):
                 fgEff = kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["eFGPct"].values[0]
                 ftRate = kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["FTRate"].values[0]
 
+                wab = bart.loc[(bart['TEAM'] == x) & (bart['YEAR'] == year)]['WAB'].values[0]
+
                 threesPG, ftpg, pdiffpg = getAggregateStats(z, year)
 
-                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'defRank': defRank, 'offRating': off, 'tempo': temp, 'fgEff': fgEff, 'ftRate': ftRate, 'threepg': threesPG, 'ftpg': ftpg, 'pDiffpg': pdiffpg}, index = [x])
+                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'defRank': defRank, 'offRating': off, 'tempo': temp, 'fgEff': fgEff, 'ftRate': ftRate, 'wab': wab, 'threepg': threesPG, 'ftpg': ftpg, 'pDiffpg': pdiffpg}, index = [x])
 
                 if(not new_data.empty):
                     my_data = pd.concat([my_data, new_data])
