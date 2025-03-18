@@ -158,7 +158,15 @@ kenpomToMTeams = {
     'Arkansas Pine Bluff': 'Ark Pine Bluff',
     'Northern Kentucky': 'N Kentucky',
     'Troy St.': 'Troy St',
-    'LIU': 'LIU'
+    'LIU': 'LIU',
+    'Wichita St.': 'Wichita St',
+    'Texas Southern': 'TX Southern',
+    'Georgia St.': 'Georgia St',
+    'Grambling St.': 'Grambling',
+    'Western Kentucky': 'WKU',
+    'College of Charleston': 'Col Charleston',
+    'Murray St.': 'Murray St',
+    'Alabama St.': 'Alabama St'
 }
 
 def map_teams(team_name):
@@ -195,7 +203,7 @@ barttorvikToMTeams = team_pairings = {
     'South Dakota St.': 'S Dakota St',
     'Utah St.': 'Utah St',
     'Washington St.': 'Washington St',
-    'Western Kentucky': 'W Kentucky',
+    'Western Kentucky': 'WKU',
     'Arizona St.': 'Arizona St',
     'Fairleigh Dickinson': 'F Dickinson',
     'Kansas St.': 'Kansas St',

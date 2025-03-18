@@ -16,14 +16,10 @@ my_data = pd.DataFrame()
 year = 2003
 
 def getAggregateStats(my_team, year):
-    #my_team = 1104 #Alabama
-    #year = 2021
     
     w_games = season.loc[((season['WTeamID'] == my_team)) & (season['Season'] == year)]
     l_games = season.loc[((season['LTeamID'] == my_team)) & (season['Season'] == year)]
     
-   # points_made = (w_games['WFGM3'].sum() * 3) + (l_games['LFGM3'].sum() * 3) + ((w_games['WFGM'].sum() - w_games['WFGM3'].sum()) * 2) + ((l_games['LFGM'].sum() - l_games['LFGM3'].sum()) * 2)
-   #posessions = w_games['WFGA'].sum() + w_games['WTO'].sum() + l_games['LFGA'].sum() + l_games['LTO'].sum()
     gameCount = (len(w_games) + len(l_games))
 
     threesPerG = (w_games['WFGM3'].sum() + l_games['LFGM3'].sum()) / gameCount  #Three Pointers Made / Game
@@ -46,10 +42,12 @@ for y in range(2008, 2025):
                 ftRate = kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["FTRate"].values[0]
 
                 wab = bart.loc[(bart['TEAM'] == x) & (bart['YEAR'] == year)]['WAB'].values[0]
+                talent = bart.loc[(bart['TEAM'] == x) & (bart['YEAR'] == year)]['TALENT'].values[0]
+                sos = bart.loc[(bart['TEAM'] == x) & (bart['YEAR'] == year)]['ELITE SOS'].values[0]
 
                 threesPG, ftpg, pdiffpg = getAggregateStats(z, year)
 
-                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'defRank': defRank, 'offRating': off, 'tempo': temp, 'fgEff': fgEff, 'ftRate': ftRate, 'wab': wab, 'threepg': threesPG, 'ftpg': ftpg, 'pDiffpg': pdiffpg}, index = [x])
+                new_data = pd.DataFrame({'Year': y, 'ID': z, 'Team': x, 'offRank': offRank, 'defRank': defRank, 'offRating': off, 'tempo': temp, 'fgEff': fgEff, 'ftRate': ftRate, 'wab': wab, 'talent': talent, 'sos': sos, 'threepg': threesPG, 'ftpg': ftpg, 'pDiffpg': pdiffpg}, index = [x])
 
                 if(not new_data.empty):
                     my_data = pd.concat([my_data, new_data])
@@ -82,6 +80,12 @@ for index, row in tourney.iterrows():
         tourney.loc[index,'Wwab'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['wab'].values[0]
         tourney.loc[index,'Lwab'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['wab'].values[0]
 
+        tourney.loc[index,'Wtalent'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['talent'].values[0]
+        tourney.loc[index,'Ltalent'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['talent'].values[0]
+
+        tourney.loc[index,'Wsos'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['sos'].values[0]
+        tourney.loc[index,'Lsos'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['sos'].values[0]
+
         tourney.loc[index,'WThreepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['threepg'].values[0]
         tourney.loc[index,'LThreepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['threepg'].values[0]
 
@@ -105,14 +109,13 @@ for index, row in tourney.iterrows():
             print(teams.loc[teams['TeamID'] == lID, 'TeamName'].values[0], year)
 
 print(tourney.shape)
-tourney.to_csv('preNAdrop.csv', index=False)
 prepped_data = tourney.dropna()
 print("filter data")
 print(prepped_data.shape)
 
 
 def prepare_data(df):
-    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WDefRank', 'LDefRank', 'WTempo', 'LTempo', 'WfgEff', 'LfgEff', 'WftRate', 'LftRate', 'Wwab', 'Lwab', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
+    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WDefRank', 'LDefRank', 'WTempo', 'LTempo', 'WfgEff', 'LfgEff', 'WftRate', 'LftRate', 'Wwab', 'Lwab', 'Wtalent', 'Ltalent', 'Wsos', 'Lsos', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
   
     df.columns = [x.replace('W','T1_').replace('L','T2_') for x in list(df.columns)]
     dfswap.columns = [x.replace('L','T1_').replace('W','T2_') for x in list(dfswap.columns)]

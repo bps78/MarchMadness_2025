@@ -9,9 +9,9 @@ data = pd.read_csv("prepped_data.csv")
 
 # RECORD = 0.18468 -> Random Tree n = 5 (seedDiff, offRankDiff, defRankDiff, fgEff, ftRate, wab, 3PG, FTPG, PDiffPG)
 
-# ********TODO****************
-# Add Barttovrik Rankings Data?? !**! (THE DATA SET IS IMPORTED AND RENAMED)
-# Add resume feature??
+#************************************************************************************************
+# TODO TRY TALENT AND SOS FEATURES (Maybe add differential stats for them) !!!!!!!!!!!!!!!!! TODO
+#************************************************************************************************
 
 features = ['Seed_Diff', 'offRankDiff', 'defRankDiff', 'T1_fgEff', 'T2_fgEff', 'T1_ftRate', 'T2_ftRate', 'T1_wab', 'T2_wab', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
 
