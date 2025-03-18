@@ -7,13 +7,13 @@ from sklearn.model_selection import GridSearchCV
 
 data = pd.read_csv("prepped_data.csv")
 
-# RECORD = 0.18954 -> Random Tree (seedDiff, offRankDiff, defRankDiff, fgEff, ftRate, 3PG, FTPG, PDiffPG)
+# RECORD = 0.18468 -> Random Tree n = 5 (seedDiff, offRankDiff, defRankDiff, fgEff, ftRate, wab, 3PG, FTPG, PDiffPG)
 
 # ********TODO****************
 # Add Barttovrik Rankings Data?? !**! (THE DATA SET IS IMPORTED AND RENAMED)
 # Add resume feature??
 
-features = ['Seed_Diff', 'offRankDiff', 'defRankDiff', 'T1_fgEff', 'T2_fgEff', 'T1_ftRate', 'T2_ftRate', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
+features = ['Seed_Diff', 'offRankDiff', 'defRankDiff', 'T1_fgEff', 'T2_fgEff', 'T1_ftRate', 'T2_ftRate', 'T1_wab', 'T2_wab', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
 
 train = data[data['Season'] < 2020]
 test = data[data['Season'] > 2020]
@@ -28,7 +28,7 @@ rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(Xtrain, ytrain)
 
 feature_importance = pd.Series(rf.feature_importances_, index = Xtrain.columns)
-top_features = feature_importance.nlargest(10).index #Selects the 10 top features
+top_features = feature_importance.nlargest(5).index #Selects the 10 top features
 
 #Filter for only selected features
 Xtrain_selected = Xtrain[top_features]

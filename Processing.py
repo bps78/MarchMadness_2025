@@ -2,10 +2,10 @@ import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import matplotlib.pyplot as plt
 
-kenpom = pd.read_csv("Renamed_KenPom.csv") #Chat-GPT renamed teams to match spelling in MTeams.csv
-kenpom_off = pd.read_csv("INT _ KenPom _ Offense_Renamed.csv")
+kenpom = pd.read_csv("Kenpom_eff_renamed.csv") #Chat-GPT renamed teams to match spelling in MTeams.csv
+kenpom_off = pd.read_csv("Kenpom_off_renamed.csv")
 
-bart = pd.read_csv("KenPom Barttorvik_Renamed.csv")
+bart = pd.read_csv("Barttorvik_renamed.csv")
 
 teams = pd.read_csv("MTeams.csv")
 season = pd.read_csv("MRegularSeasonDetailedResults.csv")
@@ -32,7 +32,7 @@ def getAggregateStats(my_team, year):
    
     return (threesPerG, ftpg, pdiffpg)
 
-for y in range(2003, 2025):
+for y in range(2008, 2025):
     year = y
     if(year != 2020):
         for x, z in zip(teams['TeamName'], teams['TeamID']):
@@ -54,11 +54,13 @@ for y in range(2003, 2025):
                 if(not new_data.empty):
                     my_data = pd.concat([my_data, new_data])
 
-print(my_data.head())
+print("Num of Unique teams data was found for",len(my_data['Team'].unique()))
+print(my_data['Team'].unique())
+my_data.to_csv('myInitialData.csv', index=False)
 
-tourney = tourney.loc[tourney['Season'] > 2002]
-
-#Get each game from the tournament since 2002
+tourney = tourney.loc[tourney['Season'] > 2007]
+print("# of tourney games", len(tourney['Season']))
+#Get each game from the tournament since 2008
 for index, row in tourney.iterrows():
     wID = row['WTeamID']
     lID = row['LTeamID']
@@ -77,6 +79,9 @@ for index, row in tourney.iterrows():
         tourney.loc[index,'WftRate'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['ftRate'].values[0]
         tourney.loc[index,'LftRate'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['ftRate'].values[0]
 
+        tourney.loc[index,'Wwab'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['wab'].values[0]
+        tourney.loc[index,'Lwab'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['wab'].values[0]
+
         tourney.loc[index,'WThreepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['threepg'].values[0]
         tourney.loc[index,'LThreepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['threepg'].values[0]
 
@@ -92,14 +97,22 @@ for index, row in tourney.iterrows():
         tourney.loc[index,'WDefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['defRank'].values[0]
         tourney.loc[index,'LDefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['defRank'].values[0]
 
-print(tourney.head())
+    else:
+        #Debugging
+        if(not my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRating'].any()):
+            print(teams.loc[teams['TeamID'] == wID, 'TeamName'].values[0], year)
+        else:
+            print(teams.loc[teams['TeamID'] == lID, 'TeamName'].values[0], year)
 
+print(tourney.shape)
+tourney.to_csv('preNAdrop.csv', index=False)
 prepped_data = tourney.dropna()
+print("filter data")
 print(prepped_data.shape)
 
 
 def prepare_data(df):
-    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WDefRank', 'LDefRank', 'WTempo', 'LTempo', 'WfgEff', 'LfgEff', 'WftRate', 'LftRate', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
+    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WDefRank', 'LDefRank', 'WTempo', 'LTempo', 'WfgEff', 'LfgEff', 'WftRate', 'LftRate', 'Wwab', 'Lwab', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
   
     df.columns = [x.replace('W','T1_').replace('L','T2_') for x in list(df.columns)]
     dfswap.columns = [x.replace('L','T1_').replace('W','T2_') for x in list(dfswap.columns)]
