@@ -10,11 +10,6 @@ matchups = pd.read_csv("2025_prepped_matchups.csv")
 
 # RECORD = 0.18440 -> Random Tree n = 10 (offRankDiff, defRankDiff, fgEff, ftRate, wab, talent, sos, 3PG, FTPG, PDiffPG)
 
-#************************************************************************************************
-# TODO Improve model, finalize, and then clean up code for submission TODO
-#************************************************************************************************
-
-
 features = ['offRankDiff', 'defRankDiff', 'T1_fgEff', 'T2_fgEff', 'T1_ftRate', 'T2_ftRate', 'T1_wab', 'T2_wab', 'T1_talent', 'T2_talent', 'T1_sos', 'T2_sos', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
 
 train = data[data['Season'] < 2020]

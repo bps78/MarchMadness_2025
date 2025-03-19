@@ -1,20 +1,22 @@
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-import matplotlib.pyplot as plt
 
-kenpom = pd.read_csv("Kenpom_eff_renamed.csv") #Chat-GPT renamed teams to match spelling in MTeams.csv
+#See sources of below data in Pre_processing.py
+kenpom = pd.read_csv("Kenpom_eff_renamed.csv")
 kenpom_off = pd.read_csv("Kenpom_off_renamed.csv")
 
 bart = pd.read_csv("Barttorvik_renamed.csv")
 
+#Below data is from https://www.kaggle.com/competitions/march-machine-learning-mania-2025/data
 teams = pd.read_csv("MTeams.csv")
 season = pd.read_csv("MRegularSeasonDetailedResults.csv")
 tourney = pd.read_csv("MNCAATourneyCompactResults.csv")
 seeds = pd.read_csv("MNCAATourneySeeds.csv")
 
-my_data = pd.DataFrame()
-year = 2003
 
+my_data = pd.DataFrame()
+
+#Gets certain stats that we will be using that need to be summed up over the course of an entire season
 def getAggregateStats(my_team, year):
     
     w_games = season.loc[((season['WTeamID'] == my_team)) & (season['Season'] == year)]
@@ -28,6 +30,8 @@ def getAggregateStats(my_team, year):
    
     return (threesPerG, ftpg, pdiffpg)
 
+#Get stats that have already been collected for us that represent an entire season for one team
+#We are making a dataframe that has a different team and different year along with all their stats in each row
 for y in range(2008, 2026):
     year = y
     if(year != 2020):
@@ -52,13 +56,12 @@ for y in range(2008, 2026):
                 if(not new_data.empty):
                     my_data = pd.concat([my_data, new_data])
 
-print("Num of Unique teams data was found for",len(my_data['Team'].unique()))
-print(my_data['Team'].unique())
-my_data.to_csv('myInitialData.csv', index=False)
+
+
 
 tourney = tourney.loc[tourney['Season'] > 2007]
-print("# of tourney games", len(tourney['Season']))
-#Get each game from the tournament since 2008
+print("# of tourney games since 2008 ", len(tourney['Season']))
+#Get each game from the tournament since 2008 to use for training and testing the model
 for index, row in tourney.iterrows():
     wID = row['WTeamID']
     lID = row['LTeamID']
@@ -104,18 +107,11 @@ for index, row in tourney.iterrows():
         tourney.loc[index,'WDefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['defRank'].values[0]
         tourney.loc[index,'LDefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['defRank'].values[0]
 
-
-    else:
-        #Debugging
-        if(not my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRating'].any()):
-            print(teams.loc[teams['TeamID'] == wID, 'TeamName'].values[0], year)
-        else:
-            print(teams.loc[teams['TeamID'] == lID, 'TeamName'].values[0], year)
-
-print(tourney.shape)
+#Drop NA values that did not get asigned properly to prevent errors
+print('Pre NA drop ', tourney.shape)
 prepped_data = tourney.dropna()
 print("filter data")
-print(prepped_data.shape)
+print('Post NA drop ', prepped_data.shape)
 
 
 #Mapping from the MTeams naming conventions to the submission file naming conventions
@@ -143,7 +139,8 @@ sub_mapping = {
 def map_teams(team_name):
     return sub_mapping.get(team_name, team_name)
 
-#Create a dataframe with data for submission matchups
+
+#Create a dataframe with data for submission matchups and the data needed to make predictions
 submission = pd.read_csv("competition_submission.csv")
 for index, row in submission.iterrows():
     t1 = row['higher_seed']
@@ -193,7 +190,7 @@ for index, row in submission.iterrows():
 
 
 
-
+#Replaces the W and L with T1 and T2 as well as creates 2 copies of every game so that the team listed first does not always win every time
 def prepare_data(df):
     dfswap = df[['Season', 'DayNum', 'LTeam', 'LTeamID', 'LScore', 'WTeam', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WDefRank', 'LDefRank', 'WTempo', 'LTempo', 'WfgEff', 'LfgEff', 'WftRate', 'LftRate', 'Wwab', 'Lwab', 'Wtalent', 'Ltalent', 'Wsos', 'Lsos', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
   
@@ -205,13 +202,11 @@ def prepare_data(df):
     
     return output
 
-
+#Apply the function
 prepped_data = prepare_data(prepped_data)
 
-#Create Differential Stats
 
-#prepped_data['offRatingDiff'] = prepped_data['T1_OffRating'] - prepped_data['T2_OffRating']
-#prepped_data['tempoDiff'] = prepped_data['T1_Tempo'] - prepped_data['T2_Tempo']
+#Create Differential Stats
 prepped_data['offRankDiff'] = prepped_data['T1_OffRank'] - prepped_data['T2_OffRank']
 prepped_data['defRankDiff'] = prepped_data['T1_DefRank'] - prepped_data['T2_DefRank']
 prepped_data['talentDiff'] = prepped_data['T1_talent'] - prepped_data['T2_talent']
@@ -235,10 +230,8 @@ prepped_data = pd.merge(prepped_data, seeds_T2, on = ['Season', 'T2_TeamID'], ho
 
 prepped_data['Seed_Diff'] = prepped_data['T1_seed'] - prepped_data['T2_seed']
 
-print(prepped_data.head())
-
+#Save our data to be used by the model
 prepped_data.to_csv('prepped_data.csv', index=False)
-
 submission.to_csv('2025_prepped_matchups.csv', index=False)
 
 
