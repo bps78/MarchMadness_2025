@@ -6,14 +6,16 @@ from colorama import Fore
 from sklearn.model_selection import GridSearchCV
 
 data = pd.read_csv("prepped_data.csv")
+matchups = pd.read_csv("2025_prepped_matchups.csv")
 
-# RECORD = 0.18468 -> Random Tree n = 5 (seedDiff, offRankDiff, defRankDiff, fgEff, ftRate, wab, 3PG, FTPG, PDiffPG)
+# RECORD = 0.18440 -> Random Tree n = 10 (offRankDiff, defRankDiff, fgEff, ftRate, wab, talent, sos, 3PG, FTPG, PDiffPG)
 
 #************************************************************************************************
-# TODO TRY TALENT AND SOS FEATURES (Maybe add differential stats for them) !!!!!!!!!!!!!!!!! TODO
+# TODO Improve model, finalize, and then clean up code for submission TODO
 #************************************************************************************************
 
-features = ['Seed_Diff', 'offRankDiff', 'defRankDiff', 'T1_fgEff', 'T2_fgEff', 'T1_ftRate', 'T2_ftRate', 'T1_wab', 'T2_wab', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
+
+features = ['offRankDiff', 'defRankDiff', 'T1_fgEff', 'T2_fgEff', 'T1_ftRate', 'T2_ftRate', 'T1_wab', 'T2_wab', 'T1_talent', 'T2_talent', 'T1_sos', 'T2_sos', 'T1_Threepg', 'T2_Threepg', 'T1_FTPG', 'T2_FTPG', 'T1_PDiffPG', 'T2_PDiffPG']
 
 train = data[data['Season'] < 2020]
 test = data[data['Season'] > 2020]
@@ -24,11 +26,11 @@ Xtest = test[features]
 ytest = (test['T1_Score'] > test['T2_Score']).astype(int)
 
 #Random Forest for Feature Selection
-rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf = RandomForestClassifier(n_estimators=200, random_state=42)
 rf.fit(Xtrain, ytrain)
 
 feature_importance = pd.Series(rf.feature_importances_, index = Xtrain.columns)
-top_features = feature_importance.nlargest(5).index #Selects the 10 top features
+top_features = feature_importance.nlargest(10).index #Selects the 10 top features
 
 #Filter for only selected features
 Xtrain_selected = Xtrain[top_features]
@@ -79,3 +81,21 @@ summary = test[['Season', 'DayNum', 'T1_TeamID', 'T1_Score', 'T2_TeamID', 'T2_Sc
 
 #Save our Predictions for viewing
 summary.to_csv('Predictions.csv', index=False)
+
+
+
+#Make predictions for this year
+finalPredictFeatures = matchups[top_features]
+finalPredictions = m2.predict_proba(finalPredictFeatures)
+
+finalPredictionsTable = matchups.copy()
+matchups['Pred'] = finalPredictions[:,1]
+matchups['rounded_preds'] = np.round(finalPredictions[:,1])
+finalPredSummary = matchups[['higher_seed', 'higher_seed_num', 'lower_seed', 'lower_seed_num', 'Pred', 'rounded_preds']]
+
+finalPredSummary.to_csv("final_predictions.csv", index=False)
+
+#See what upsets we are predicting to take place
+finalPredUpsets = matchups.loc[matchups['rounded_preds'] == 0]
+finalPredUpsets = finalPredUpsets[['higher_seed', 'higher_seed_num', 'lower_seed', 'lower_seed_num', 'Pred', 'rounded_preds']]
+finalPredUpsets.to_csv("final_prediction_upsets.csv", index=False)

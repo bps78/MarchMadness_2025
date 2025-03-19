@@ -1,0 +1,356 @@
+higher_seed,higher_seed_num,lower_seed,lower_seed_num,Pred,rounded_preds
+Florida,1,St. John's,2,0.473356,0.0
+Florida,1,Michigan St.,2,0.33878472,0.0
+Florida,1,Maryland,4,0.4196054,0.0
+Auburn,1,St. John's,2,0.46763954,0.0
+Auburn,1,Michigan St.,2,0.3075534,0.0
+Auburn,1,Maryland,4,0.329262,0.0
+St. John's,2,Michigan St.,2,0.23408583,0.0
+St. John's,2,Tennessee,2,0.46515268,0.0
+St. John's,2,Texas Tech,3,0.37430978,0.0
+St. John's,2,Wisconsin,3,0.36124343,0.0
+St. John's,2,Maryland,4,0.23608357,0.0
+St. John's,2,Clemson,5,0.43484622,0.0
+St. John's,2,BYU,6,0.38602942,0.0
+St. John's,2,Marquette,7,0.40132797,0.0
+St. John's,2,UCLA,7,0.43385667,0.0
+St. John's,2,Louisville,8,0.37223747,0.0
+St. John's,2,Gonzaga,8,0.41198856,0.0
+St. John's,2,VCU,11,0.43167564,0.0
+Michigan St.,2,Tennessee,2,0.4658435,0.0
+Tennessee,2,Maryland,4,0.49336198,0.0
+Tennessee,2,Gonzaga,8,0.4102637,0.0
+Alabama,2,Texas Tech,3,0.39558867,0.0
+Alabama,2,Wisconsin,3,0.29843163,0.0
+Alabama,2,Maryland,4,0.29577604,0.0
+Alabama,2,Clemson,5,0.35362756,0.0
+Alabama,2,Oregon,5,0.47817838,0.0
+Alabama,2,Marquette,7,0.33691406,0.0
+Alabama,2,UCLA,7,0.34260046,0.0
+Alabama,2,Louisville,8,0.33516106,0.0
+Alabama,2,Gonzaga,8,0.33332574,0.0
+Alabama,2,New Mexico,10,0.46019462,0.0
+Alabama,2,VCU,11,0.38187164,0.0
+Alabama,2,San Diego St.,11,0.45732784,0.0
+Texas Tech,3,Wisconsin,3,0.464193,0.0
+Texas Tech,3,Maryland,4,0.4531131,0.0
+Texas Tech,3,Marquette,7,0.43187398,0.0
+Texas Tech,3,UCLA,7,0.4435586,0.0
+Texas Tech,3,Gonzaga,8,0.44574037,0.0
+Wisconsin,3,Maryland,4,0.47503582,0.0
+Wisconsin,3,UCLA,7,0.41348627,0.0
+Wisconsin,3,VCU,11,0.4653817,0.0
+Iowa St.,3,Maryland,4,0.39137024,0.0
+Iowa St.,3,Saint Mary's,7,0.49874312,0.0
+Iowa St.,3,Gonzaga,8,0.42358243,0.0
+Kentucky,3,Maryland,4,0.1798416,0.0
+Kentucky,3,Texas A&M,4,0.43322918,0.0
+Kentucky,3,Arizona,4,0.36525312,0.0
+Kentucky,3,Memphis,5,0.3860562,0.0
+Kentucky,3,Clemson,5,0.24147634,0.0
+Kentucky,3,Michigan,5,0.41684455,0.0
+Kentucky,3,Oregon,5,0.34215388,0.0
+Kentucky,3,Mississippi,6,0.38698408,0.0
+Kentucky,3,Illinois,6,0.46818247,0.0
+Kentucky,3,Saint Mary's,7,0.35897338,0.0
+Kentucky,3,Marquette,7,0.23314719,0.0
+Kentucky,3,UCLA,7,0.23121119,0.0
+Kentucky,3,Kansas,7,0.4480197,0.0
+Kentucky,3,Louisville,8,0.27365646,0.0
+Kentucky,3,Gonzaga,8,0.11288032,0.0
+Kentucky,3,Creighton,9,0.19644164,0.0
+Kentucky,3,Georgia,9,0.45178497,0.0
+Kentucky,3,New Mexico,10,0.43041733,0.0
+Kentucky,3,Arkansas,10,0.48405913,0.0
+Kentucky,3,VCU,11,0.277268,0.0
+Kentucky,3,San Diego St.,11,0.4943864,0.0
+Kentucky,3,Xavier,11,0.30439258,0.0
+Kentucky,3,North Carolina,11,0.3120731,0.0
+Kentucky,3,Liberty,12,0.46607095,0.0
+Kentucky,3,Colorado St.,12,0.2896084,0.0
+Texas A&M,4,Clemson,5,0.31480786,0.0
+Texas A&M,4,Oregon,5,0.41107723,0.0
+Texas A&M,4,BYU,6,0.38418242,0.0
+Texas A&M,4,Missouri,6,0.37275502,0.0
+Texas A&M,4,Saint Mary's,7,0.4350853,0.0
+Texas A&M,4,Marquette,7,0.26557922,0.0
+Texas A&M,4,UCLA,7,0.27468956,0.0
+Texas A&M,4,Louisville,8,0.27584192,0.0
+Texas A&M,4,Gonzaga,8,0.21632193,0.0
+Texas A&M,4,Creighton,9,0.29225194,0.0
+Texas A&M,4,VCU,11,0.31523925,0.0
+Texas A&M,4,San Diego St.,11,0.40775618,0.0
+Texas A&M,4,Xavier,11,0.49280927,0.0
+Texas A&M,4,San Diego,12,0.47452933,0.0
+Purdue,4,Arizona,4,0.21487588,0.0
+Purdue,4,Memphis,5,0.38309374,0.0
+Purdue,4,Clemson,5,0.24925858,0.0
+Purdue,4,Michigan,5,0.37465402,0.0
+Purdue,4,Oregon,5,0.33314252,0.0
+Purdue,4,BYU,6,0.35367078,0.0
+Purdue,4,Mississippi,6,0.34701002,0.0
+Purdue,4,Illinois,6,0.43376765,0.0
+Purdue,4,Saint Mary's,7,0.41348326,0.0
+Purdue,4,Marquette,7,0.23013908,0.0
+Purdue,4,UCLA,7,0.23876671,0.0
+Purdue,4,Kansas,7,0.37667787,0.0
+Purdue,4,Louisville,8,0.29874763,0.0
+Purdue,4,Gonzaga,8,0.108498566,0.0
+Purdue,4,Mississippi St.,8,0.49010742,0.0
+Purdue,4,Creighton,9,0.21760628,0.0
+Purdue,4,Georgia,9,0.3985068,0.0
+Purdue,4,Baylor,9,0.41011038,0.0
+Purdue,4,New Mexico,10,0.407083,0.0
+Purdue,4,Vanderbilt,10,0.47992307,0.0
+Purdue,4,Arkansas,10,0.41769603,0.0
+Purdue,4,VCU,11,0.29731107,0.0
+Purdue,4,San Diego St.,11,0.43100765,0.0
+Purdue,4,Xavier,11,0.2917275,0.0
+Purdue,4,North Carolina,11,0.3117259,0.0
+Purdue,4,Liberty,12,0.4662551,0.0
+Purdue,4,Colorado St.,12,0.2816945,0.0
+Arizona,4,Clemson,5,0.27597168,0.0
+Arizona,4,Oregon,5,0.44899815,0.0
+Arizona,4,Saint Mary's,7,0.46346495,0.0
+Arizona,4,Marquette,7,0.29220158,0.0
+Arizona,4,UCLA,7,0.29737958,0.0
+Arizona,4,Louisville,8,0.35835272,0.0
+Arizona,4,Gonzaga,8,0.16198237,0.0
+Arizona,4,Creighton,9,0.4501577,0.0
+Arizona,4,New Mexico,10,0.4926667,0.0
+Arizona,4,VCU,11,0.3034224,0.0
+Arizona,4,Colorado St.,12,0.48177075,0.0
+Memphis,5,Clemson,5,0.27107334,0.0
+Memphis,5,Michigan,5,0.34148067,0.0
+Memphis,5,Oregon,5,0.36539632,0.0
+Memphis,5,Mississippi,6,0.37619984,0.0
+Memphis,5,Saint Mary's,7,0.26784432,0.0
+Memphis,5,Marquette,7,0.2863727,0.0
+Memphis,5,UCLA,7,0.25545368,0.0
+Memphis,5,Kansas,7,0.24149542,0.0
+Memphis,5,Louisville,8,0.2577287,0.0
+Memphis,5,Gonzaga,8,0.24513689,0.0
+Memphis,5,Connecticut,8,0.4852792,0.0
+Memphis,5,Creighton,9,0.40865654,0.0
+Memphis,5,Georgia,9,0.40120476,0.0
+Memphis,5,Arkansas,10,0.37540385,0.0
+Memphis,5,VCU,11,0.18594988,0.0
+Memphis,5,Xavier,11,0.48803437,0.0
+Memphis,5,North Carolina,11,0.3837607,0.0
+Memphis,5,San Diego,12,0.3087807,0.0
+Michigan,5,Oregon,5,0.38795653,0.0
+Michigan,5,Missouri,6,0.42185125,0.0
+Michigan,5,Saint Mary's,7,0.33839768,0.0
+Michigan,5,Marquette,7,0.29603595,0.0
+Michigan,5,UCLA,7,0.2612289,0.0
+Michigan,5,Kansas,7,0.46180528,0.0
+Michigan,5,Louisville,8,0.28956106,0.0
+Michigan,5,Gonzaga,8,0.2580837,0.0
+Michigan,5,Creighton,9,0.319149,0.0
+Michigan,5,VCU,11,0.37071946,0.0
+Michigan,5,San Diego St.,11,0.45865965,0.0
+Michigan,5,Colorado St.,12,0.49875808,0.0
+Oregon,5,Saint Mary's,7,0.46178734,0.0
+Oregon,5,Marquette,7,0.27761194,0.0
+Oregon,5,UCLA,7,0.22677091,0.0
+Oregon,5,Louisville,8,0.2895346,0.0
+Oregon,5,Gonzaga,8,0.2638012,0.0
+Oregon,5,Creighton,9,0.47679976,0.0
+Oregon,5,VCU,11,0.24113882,0.0
+BYU,6,Mississippi,6,0.4315736,0.0
+BYU,6,Illinois,6,0.3829464,0.0
+BYU,6,Saint Mary's,7,0.42879212,0.0
+BYU,6,Marquette,7,0.25345463,0.0
+BYU,6,UCLA,7,0.22096777,0.0
+BYU,6,Kansas,7,0.47836027,0.0
+BYU,6,Louisville,8,0.33879262,0.0
+BYU,6,Gonzaga,8,0.16822104,0.0
+BYU,6,Creighton,9,0.2609837,0.0
+BYU,6,Georgia,9,0.48866436,0.0
+BYU,6,Baylor,9,0.48324582,0.0
+BYU,6,Arkansas,10,0.4526632,0.0
+BYU,6,VCU,11,0.2855598,0.0
+BYU,6,Xavier,11,0.41881767,0.0
+BYU,6,North Carolina,11,0.29305604,0.0
+BYU,6,Liberty,12,0.49606752,0.0
+BYU,6,Colorado St.,12,0.32329696,0.0
+Mississippi,6,Saint Mary's,7,0.32215765,0.0
+Mississippi,6,Marquette,7,0.28699735,0.0
+Mississippi,6,UCLA,7,0.18054533,0.0
+Mississippi,6,Louisville,8,0.15930648,0.0
+Mississippi,6,Gonzaga,8,0.18591508,0.0
+Mississippi,6,Connecticut,8,0.42018086,0.0
+Mississippi,6,Creighton,9,0.38109118,0.0
+Mississippi,6,New Mexico,10,0.45354977,0.0
+Mississippi,6,VCU,11,0.25199676,0.0
+Mississippi,6,San Diego St.,11,0.36298048,0.0
+Mississippi,6,Xavier,11,0.42778173,0.0
+Mississippi,6,North Carolina,11,0.49624318,0.0
+Mississippi,6,Colorado St.,12,0.41444552,0.0
+Missouri,6,Illinois,6,0.47790244,0.0
+Missouri,6,Marquette,7,0.35849077,0.0
+Missouri,6,UCLA,7,0.30794296,0.0
+Missouri,6,Louisville,8,0.41029733,0.0
+Missouri,6,Gonzaga,8,0.17600502,0.0
+Missouri,6,Creighton,9,0.32113802,0.0
+Missouri,6,VCU,11,0.34201682,0.0
+Missouri,6,Xavier,11,0.41195616,0.0
+Missouri,6,North Carolina,11,0.41972992,0.0
+Missouri,6,Colorado St.,12,0.3734851,0.0
+Illinois,6,Saint Mary's,7,0.35444155,0.0
+Illinois,6,Marquette,7,0.24334008,0.0
+Illinois,6,UCLA,7,0.25557005,0.0
+Illinois,6,Kansas,7,0.43822354,0.0
+Illinois,6,Louisville,8,0.2797118,0.0
+Illinois,6,Gonzaga,8,0.1089772,0.0
+Illinois,6,Creighton,9,0.34700763,0.0
+Illinois,6,New Mexico,10,0.46915334,0.0
+Illinois,6,VCU,11,0.22478303,0.0
+Illinois,6,San Diego St.,11,0.47208437,0.0
+Illinois,6,Xavier,11,0.397669,0.0
+Illinois,6,San Diego,12,0.4811689,0.0
+Illinois,6,Colorado St.,12,0.34000614,0.0
+Saint Mary's,7,Marquette,7,0.45790744,0.0
+Saint Mary's,7,UCLA,7,0.45790744,0.0
+Saint Mary's,7,Gonzaga,8,0.4383929,0.0
+Saint Mary's,7,Connecticut,8,0.4465484,0.0
+Saint Mary's,7,Creighton,9,0.46461758,0.0
+Saint Mary's,7,VCU,11,0.4236464,0.0
+Marquette,7,UCLA,7,0.3328318,0.0
+Marquette,7,Louisville,8,0.40335497,0.0
+Marquette,7,Gonzaga,8,0.4600448,0.0
+Marquette,7,VCU,11,0.4011573,0.0
+UCLA,7,Louisville,8,0.47170505,0.0
+Kansas,7,Louisville,8,0.26065114,0.0
+Kansas,7,Gonzaga,8,0.19017977,0.0
+Kansas,7,Connecticut,8,0.42003223,0.0
+Kansas,7,Creighton,9,0.27544752,0.0
+Kansas,7,New Mexico,10,0.41144297,0.0
+Kansas,7,VCU,11,0.25843817,0.0
+Kansas,7,San Diego St.,11,0.40343285,0.0
+Kansas,7,Xavier,11,0.46805176,0.0
+Kansas,7,San Diego,12,0.43448326,0.0
+Kansas,7,Colorado St.,12,0.38388988,0.0
+Louisville,8,Gonzaga,8,0.46087942,0.0
+Gonzaga,8,VCU,11,0.42935494,0.0
+Connecticut,8,Mississippi St.,8,0.42699787,0.0
+Connecticut,8,Creighton,9,0.30685717,0.0
+Connecticut,8,Baylor,9,0.30191594,0.0
+Connecticut,8,VCU,11,0.44257316,0.0
+Connecticut,8,North Carolina,11,0.31522164,0.0
+Connecticut,8,Colorado St.,12,0.40589416,0.0
+Mississippi St.,8,Creighton,9,0.16241223,0.0
+Mississippi St.,8,Georgia,9,0.4813856,0.0
+Mississippi St.,8,New Mexico,10,0.40403444,0.0
+Mississippi St.,8,Arkansas,10,0.45412692,0.0
+Mississippi St.,8,VCU,11,0.17251417,0.0
+Mississippi St.,8,San Diego St.,11,0.30166203,0.0
+Mississippi St.,8,Xavier,11,0.26794827,0.0
+Mississippi St.,8,North Carolina,11,0.3578187,0.0
+Mississippi St.,8,San Diego,12,0.3685923,0.0
+Mississippi St.,8,Colorado St.,12,0.31468287,0.0
+Creighton,9,VCU,11,0.304428,0.0
+Georgia,9,New Mexico,10,0.3811407,0.0
+Georgia,9,VCU,11,0.1292794,0.0
+Georgia,9,San Diego St.,11,0.39276505,0.0
+Georgia,9,Xavier,11,0.3342327,0.0
+Georgia,9,North Carolina,11,0.4185101,0.0
+Georgia,9,San Diego,12,0.3488103,0.0
+Georgia,9,Liberty,12,0.47035447,0.0
+Georgia,9,Colorado St.,12,0.30012432,0.0
+Oklahoma,9,Baylor,9,0.20814925,0.0
+Oklahoma,9,New Mexico,10,0.40754232,0.0
+Oklahoma,9,Arkansas,10,0.47156063,0.0
+Oklahoma,9,VCU,11,0.18973508,0.0
+Oklahoma,9,San Diego St.,11,0.39353397,0.0
+Oklahoma,9,Xavier,11,0.2781379,0.0
+Oklahoma,9,North Carolina,11,0.18364212,0.0
+Oklahoma,9,Texas,11,0.483582,0.0
+Oklahoma,9,San Diego,12,0.42418063,0.0
+Oklahoma,9,Liberty,12,0.47742233,0.0
+Oklahoma,9,McNeese St.,12,0.47285774,0.0
+Oklahoma,9,Colorado St.,12,0.23239812,0.0
+Baylor,9,New Mexico,10,0.43613234,0.0
+Baylor,9,Arkansas,10,0.4349732,0.0
+Baylor,9,VCU,11,0.18959406,0.0
+Baylor,9,San Diego St.,11,0.45895666,0.0
+Baylor,9,Xavier,11,0.28794947,0.0
+Baylor,9,North Carolina,11,0.29410186,0.0
+Baylor,9,San Diego,12,0.4055469,0.0
+Baylor,9,Colorado St.,12,0.23991597,0.0
+New Mexico,10,Utah St.,10,0.4682145,0.0
+New Mexico,10,Vanderbilt,10,0.43745202,0.0
+New Mexico,10,VCU,11,0.25275522,0.0
+New Mexico,10,San Diego St.,11,0.4962958,0.0
+New Mexico,10,North Carolina,11,0.46480495,0.0
+New Mexico,10,San Diego,12,0.430821,0.0
+New Mexico,10,Colorado St.,12,0.37336007,0.0
+Utah St.,10,Vanderbilt,10,0.4004069,0.0
+Utah St.,10,Arkansas,10,0.44976893,0.0
+Utah St.,10,Drake,11,0.47930533,0.0
+Utah St.,10,VCU,11,0.21471637,0.0
+Utah St.,10,San Diego St.,11,0.46936586,0.0
+Utah St.,10,Xavier,11,0.40249565,0.0
+Utah St.,10,North Carolina,11,0.17967029,0.0
+Utah St.,10,Texas,11,0.39918113,0.0
+Utah St.,10,San Diego,12,0.35065642,0.0
+Utah St.,10,Liberty,12,0.4171535,0.0
+Utah St.,10,McNeese St.,12,0.42075324,0.0
+Utah St.,10,Colorado St.,12,0.27690834,0.0
+Vanderbilt,10,Arkansas,10,0.49921304,0.0
+Vanderbilt,10,VCU,11,0.28469715,0.0
+Vanderbilt,10,San Diego St.,11,0.49076468,0.0
+Vanderbilt,10,Xavier,11,0.33673647,0.0
+Vanderbilt,10,North Carolina,11,0.23446767,0.0
+Vanderbilt,10,San Diego,12,0.38584888,0.0
+Vanderbilt,10,McNeese St.,12,0.48363498,0.0
+Vanderbilt,10,Colorado St.,12,0.28444594,0.0
+Arkansas,10,VCU,11,0.25267366,0.0
+Arkansas,10,Xavier,11,0.46378043,0.0
+Arkansas,10,San Diego,12,0.45122737,0.0
+Arkansas,10,Colorado St.,12,0.42984816,0.0
+Drake,11,VCU,11,0.15915664,0.0
+Drake,11,Xavier,11,0.37078,0.0
+Drake,11,North Carolina,11,0.2880606,0.0
+Drake,11,San Diego,12,0.2960947,0.0
+Drake,11,Liberty,12,0.48848054,0.0
+Drake,11,McNeese St.,12,0.47897953,0.0
+Drake,11,Colorado St.,12,0.30159858,0.0
+San Diego St.,11,San Diego,12,0.36293522,0.0
+San Diego St.,11,Colorado St.,12,0.44442937,0.0
+Xavier,11,San Diego,12,0.41218242,0.0
+Xavier,11,Colorado St.,12,0.4699114,0.0
+Texas,11,San Diego,12,0.38593808,0.0
+Texas,11,Liberty,12,0.46272397,0.0
+Texas,11,Colorado St.,12,0.22377375,0.0
+San Diego,12,Colorado St.,12,0.46234703,0.0
+Liberty,12,Colorado St.,12,0.38139954,0.0
+McNeese St.,12,Colorado St.,12,0.31990466,0.0
+High Point,13,Grand Canyon,13,0.18548968,0.0
+High Point,13,Yale,13,0.18510178,0.0
+High Point,13,Lipscomb,14,0.25017366,0.0
+High Point,13,Troy,14,0.20961253,0.0
+High Point,13,Robert Morris,15,0.37707087,0.0
+High Point,13,Wofford,15,0.47113517,0.0
+Akron,13,Grand Canyon,13,0.24463116,0.0
+Akron,13,Yale,13,0.31968877,0.0
+Akron,13,Lipscomb,14,0.3895878,0.0
+Akron,13,Troy,14,0.27942014,0.0
+Grand Canyon,13,Yale,13,0.41034287,0.0
+UNC Wilmington,14,Lipscomb,14,0.30114228,0.0
+UNC Wilmington,14,Troy,14,0.2743501,0.0
+UNC Wilmington,14,Wofford,15,0.43752882,0.0
+Montana,14,Troy,14,0.19736049,0.0
+Montana,14,Robert Morris,15,0.29421523,0.0
+Montana,14,Bryant,15,0.26152006,0.0
+Robert Morris,15,Wofford,15,0.47378254,0.0
+Robert Morris,15,SIUE,16,0.40944305,0.0
+Bryant,15,Wofford,15,0.3311498,0.0
+Omaha,15,Wofford,15,0.34007975,0.0
+Omaha,15,SIUE,16,0.2276217,0.0
+Omaha,15,Mount St. Mary's,16,0.45294625,0.0
+Norfolk St.,16,SIUE,16,0.27368695,0.0
+Norfolk St.,16,American,16,0.43652943,0.0
+Norfolk St.,16,Mount St. Mary's,16,0.49697405,0.0
+SIUE,16,American,16,0.39447933,0.0
+SIUE,16,Mount St. Mary's,16,0.4520108,0.0

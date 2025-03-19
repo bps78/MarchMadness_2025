@@ -28,14 +28,14 @@ def getAggregateStats(my_team, year):
    
     return (threesPerG, ftpg, pdiffpg)
 
-for y in range(2008, 2025):
+for y in range(2008, 2026):
     year = y
     if(year != 2020):
         for x, z in zip(teams['TeamName'], teams['TeamID']):
-            if(kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].any() and kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["eFGPct"].any() and bart.loc[(bart['TEAM'] == x) & (bart['YEAR'] == year)]['WAB'].any()):
+            if(kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Temo"].any() and kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["eFGPct"].any() and bart.loc[(bart['TEAM'] == x) & (bart['YEAR'] == year)]['WAB'].any()):
                 offRank = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency Rank"].values[0]
                 defRank = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Defensive Efficiency Rank"].values[0]
-                temp = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Tempo"].values[0]
+                temp = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Temo"].values[0]
                 off = kenpom.loc[(kenpom['Team'] == x) & (kenpom['Season'] == year)]["Adjusted Offensive Efficiency"].values[0]
 
                 fgEff = kenpom_off.loc[(kenpom_off['TeamName'] == x) & (kenpom_off['Season'] == year)]["eFGPct"].values[0]
@@ -65,6 +65,9 @@ for index, row in tourney.iterrows():
     year = row['Season']
 
     if(my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRating'].any() and my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['offRating'].any()):
+        tourney.loc[index,'WTeam'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['Team'].values[0]
+        tourney.loc[index,'LTeam'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['Team'].values[0]
+
         tourney.loc[index,'WOffRating'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRating'].values[0]
         tourney.loc[index,'LOffRating'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['offRating'].values[0]
         
@@ -101,6 +104,7 @@ for index, row in tourney.iterrows():
         tourney.loc[index,'WDefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['defRank'].values[0]
         tourney.loc[index,'LDefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == lID)]['defRank'].values[0]
 
+
     else:
         #Debugging
         if(not my_data.loc[(my_data['Year'] == year) & (my_data['ID'] == wID)]['offRating'].any()):
@@ -114,8 +118,84 @@ print("filter data")
 print(prepped_data.shape)
 
 
+#Mapping from the MTeams naming conventions to the submission file naming conventions
+sub_mapping = {
+    "St John's": "St. John's",
+    'Michigan St': 'Michigan St.',
+    'Iowa St': 'Iowa St.',
+    "St Mary's CA": "Saint Mary's",
+    'Mississippi St': 'Mississippi St.',
+    'Utah St': 'Utah St.',
+    'San Diego St': 'San Diego St.',
+    'McNeese St': 'McNeese St.',
+    'Colorado St': 'Colorado St.',
+    'NE Omaha': 'Omaha',
+    'Norfolk St': 'Norfolk St.',
+    'American Univ': 'American',
+    "Mt St Mary's": "Mount St. Mary's",
+    'Alabama St': 'Alabama St.',
+    'St Francis NY': 'Saint Francis',
+    'UC San Diego': 'San Diego',
+    'SIU Edwardsville': 'SIUE',
+    'St Francis PA': 'Saint Francis'
+}
+
+def map_teams(team_name):
+    return sub_mapping.get(team_name, team_name)
+
+#Create a dataframe with data for submission matchups
+submission = pd.read_csv("competition_submission.csv")
+for index, row in submission.iterrows():
+    t1 = row['higher_seed']
+    t2 = row['lower_seed']
+    year = 2025
+
+    if(not my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['offRating'].any()):
+        print(t1)
+    if(not my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['offRating'].any()):
+        print(t2)
+
+    submission.loc[index,'T1_OffRating'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['offRating'].values[0]
+    submission.loc[index,'T2_OffRating'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['offRating'].values[0]
+
+    submission.loc[index,'T1_tempo'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['tempo'].values[0]
+    submission.loc[index,'T2_tempo'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['tempo'].values[0]
+
+    submission.loc[index,'T1_fgEff'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['fgEff'].values[0]
+    submission.loc[index,'T2_fgEff'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['fgEff'].values[0]
+
+    submission.loc[index,'T1_ftRate'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['ftRate'].values[0]
+    submission.loc[index,'T2_ftRate'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['ftRate'].values[0]
+
+    submission.loc[index,'T1_wab'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['wab'].values[0]
+    submission.loc[index,'T2_wab'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['wab'].values[0]
+
+    submission.loc[index,'T1_talent'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['talent'].values[0]
+    submission.loc[index,'T2_talent'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['talent'].values[0]
+
+    submission.loc[index,'T1_sos'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['sos'].values[0]
+    submission.loc[index,'T2_sos'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['sos'].values[0]
+
+    submission.loc[index,'T1_Threepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['threepg'].values[0]
+    submission.loc[index,'T2_Threepg'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['threepg'].values[0]
+
+    submission.loc[index,'T1_FTPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['ftpg'].values[0]
+    submission.loc[index,'T2_FTPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['ftpg'].values[0]
+
+    submission.loc[index,'T1_PDiffPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['pDiffpg'].values[0]
+    submission.loc[index,'T2_PDiffPG'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['pDiffpg'].values[0]
+
+    submission.loc[index,'T1_OffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['offRank'].values[0]
+    submission.loc[index,'T2_OffRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['offRank'].values[0]
+
+    submission.loc[index,'T1_DefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t1)]['defRank'].values[0]
+    submission.loc[index,'T2_DefRank'] = my_data.loc[(my_data['Year'] == year) & (my_data['Team'].apply(map_teams) == t2)]['defRank'].values[0]
+
+
+
+
 def prepare_data(df):
-    dfswap = df[['Season', 'DayNum', 'LTeamID', 'LScore', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WDefRank', 'LDefRank', 'WTempo', 'LTempo', 'WfgEff', 'LfgEff', 'WftRate', 'LftRate', 'Wwab', 'Lwab', 'Wtalent', 'Ltalent', 'Wsos', 'Lsos', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
+    dfswap = df[['Season', 'DayNum', 'LTeam', 'LTeamID', 'LScore', 'WTeam', 'WTeamID', 'WScore', 'WLoc', 'NumOT', 'WOffRating', 'LOffRating', 'WOffRank', 'LOffRank', 'WDefRank', 'LDefRank', 'WTempo', 'LTempo', 'WfgEff', 'LfgEff', 'WftRate', 'LftRate', 'Wwab', 'Lwab', 'Wtalent', 'Ltalent', 'Wsos', 'Lsos', 'WThreepg', 'LThreepg', 'WFTPG', 'LFTPG', 'WPDiffPG', 'LPDiffPG']]
   
     df.columns = [x.replace('W','T1_').replace('L','T2_') for x in list(df.columns)]
     dfswap.columns = [x.replace('L','T1_').replace('W','T2_') for x in list(dfswap.columns)]
@@ -134,6 +214,14 @@ prepped_data = prepare_data(prepped_data)
 #prepped_data['tempoDiff'] = prepped_data['T1_Tempo'] - prepped_data['T2_Tempo']
 prepped_data['offRankDiff'] = prepped_data['T1_OffRank'] - prepped_data['T2_OffRank']
 prepped_data['defRankDiff'] = prepped_data['T1_DefRank'] - prepped_data['T2_DefRank']
+prepped_data['talentDiff'] = prepped_data['T1_talent'] - prepped_data['T2_talent']
+prepped_data['sosDiff'] = prepped_data['T1_sos'] - prepped_data['T2_sos']
+
+submission['offRankDiff'] = submission['T1_OffRank'] - submission['T2_OffRank']
+submission['defRankDiff'] = submission['T1_DefRank'] - submission['T2_DefRank']
+submission['talentDiff'] = submission['T1_talent'] - submission['T2_talent']
+submission['sosDiff'] = submission['T1_sos'] - submission['T2_sos']
+submission['Seed_Diff'] = submission['higher_seed_num'] - submission['lower_seed_num']
 
 
 #Apply seeds
@@ -150,5 +238,7 @@ prepped_data['Seed_Diff'] = prepped_data['T1_seed'] - prepped_data['T2_seed']
 print(prepped_data.head())
 
 prepped_data.to_csv('prepped_data.csv', index=False)
+
+submission.to_csv('2025_prepped_matchups.csv', index=False)
 
 
