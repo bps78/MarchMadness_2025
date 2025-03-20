@@ -1,4 +1,4 @@
-higher_seed,higher_seed_num,lower_seed,lower_seed_num,Pred,rounded_preds
+higher_seed,higher_seed_num,lower_seed,lower_seed_num,preds,rounded_preds
 Florida,1,St. John's,2,0.473356,0.0
 Florida,1,Michigan St.,2,0.33878472,0.0
 Florida,1,Maryland,4,0.4196054,0.0
