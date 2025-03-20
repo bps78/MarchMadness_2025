@@ -84,13 +84,13 @@ finalPredictFeatures = matchups[top_features]
 finalPredictions = m2.predict_proba(finalPredictFeatures)
 
 finalPredictionsTable = matchups.copy()
-matchups['preds'] = finalPredictions[:,1]
+matchups['Pred'] = finalPredictions[:,1]
 matchups['rounded_preds'] = np.round(finalPredictions[:,1])
-finalPredSummary = matchups[['higher_seed', 'higher_seed_num', 'higher_record', 'lower_seed', 'lower_seed_num', 'lower_record', 'preds']]
+finalPredSummary = matchups[['higher_seed', 'higher_seed_num', 'lower_seed', 'lower_seed_num', 'Pred', 'rounded_preds']]
 
 finalPredSummary.to_csv("final_predictions.csv", index=False)
 
 #See what upsets we are predicting to take place
-finalPredUpsets = matchups.loc[matchups['preds'] < 0.5]
-finalPredUpsets = finalPredUpsets[['higher_seed', 'higher_seed_num', 'lower_seed', 'lower_seed_num', 'preds', 'rounded_preds']]
+finalPredUpsets = matchups.loc[matchups['rounded_preds'] == 0]
+finalPredUpsets = finalPredUpsets[['higher_seed', 'higher_seed_num', 'lower_seed', 'lower_seed_num', 'Pred', 'rounded_preds']]
 finalPredUpsets.to_csv("final_prediction_upsets.csv", index=False)
